@@ -5,7 +5,6 @@ import variable from 'native-base/src/theme/variables/platform';
 import { PLATFORM } from 'native-base/src/theme/variables/commonColor';
 
 import { Text } from 'native-base/src/basic/Text';
-import { relativeTimeThreshold } from 'moment';
 
 export default class DatePicker extends Component {
   static defaultProps = {
