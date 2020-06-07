@@ -1,114 +1,74 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow strict-local
- */
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import Login from './src/screens/login';
+import ChatScreen from './src/screens/chat-screen';
+import ChatList from './src/screens/chat-list';
+import Swipe from './src/screens/swipe';
+import Search from './src/screens/search';
+import Settings from './src/screens/settings';
+import ProfileModal from './src/screens/settings/profileModal';
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+import Step1 from './src/screens/user-registration/step-1';
+import Step2 from './src/screens/user-registration/step-2';
+import EthnicityPreferenceCheckBoxes from './src/screens/user-registration/ethnicityPreferenceCheckBoxes';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import store from './src/store';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const App: () => React$Node = () => {
+import ButtomTabBar from './src/components/navigation/bottomTabBar';
+
+const Stack = createStackNavigator();
+const SettingsRootStack = createStackNavigator();
+const UserRegistrationStack = createStackNavigator();
+const Tab = createBottomTabNavigator();
+
+const Main = () => {
   return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+    <Tab.Navigator tabBar={props => <ButtomTabBar {...props}/>}>
+      <Tab.Screen name="Swipe" component={Swipe} />
+      <Tab.Screen name="Search" component={Search} />
+      <Tab.Screen name="Messages" component={ChatList} />
+      <Tab.Screen name="Settings" component={Settings} />
+    </Tab.Navigator>
   );
-};
+} 
 
-const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
+const Home = () => {
+  return (
+    <SettingsRootStack.Navigator mode="modal" screenOptions={{ headerShown: false }}>
+      <SettingsRootStack.Screen name="Main" component={Main} />
+      <SettingsRootStack.Screen name="ProfileModal" component={ProfileModal} />
+    </SettingsRootStack.Navigator>
+  )
+}
+
+const UserRegistration = () => {
+  return (
+    <UserRegistrationStack.Navigator mode="card" screenOptions={{ headerShown: false, gestureEnabled: false }}>
+      <UserRegistrationStack.Screen name="Step2" component={Step2} />
+      <UserRegistrationStack.Screen name="Step1" component={Step1} />
+      <UserRegistrationStack.Screen name="EthnicityPreferenceCheckBoxes" component={EthnicityPreferenceCheckBoxes} />
+    </UserRegistrationStack.Navigator>
+  );
+}
+
+class App extends Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator mode="card" screenOptions={{ headerShown: false, gestureEnabled: false }}>
+            <Stack.Screen name="UserRegistration" component={UserRegistration}></Stack.Screen>
+            <Stack.Screen name="Login" component={Login}></Stack.Screen>
+            <Stack.Screen name="Home" component={Home}></Stack.Screen>
+            <Stack.Screen name="ChatScreen" component={ChatScreen}></Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+    )
+  }
+};
 
 export default App;
