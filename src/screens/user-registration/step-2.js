@@ -24,8 +24,7 @@ class Step2 extends Component {
             { bodyTypeID: 4, label: 'Chubby' },
             { bodyTypeID: 5, label: 'Obese' }
         ],
-        bodyTypeID: '',
-        modalVisible: false
+        bodyTypeID: ''
     };
 
     constructor(props) {
@@ -167,9 +166,9 @@ class Step2 extends Component {
         this.setState({ showBodyTypePicker, bodyTypeID });
     }
 
-    handleModalChange = (modalVisible) => {
-        this.setState({ modalVisible });
-    }
+    // handleModalChange = (modalVisible) => {
+    //     this.setState({ modalVisible });
+    // }
 
     render() {
         return (
@@ -213,7 +212,6 @@ class Step2 extends Component {
                                             placeHolderTextStyle={{ color: "gray" }}
                                             value={this.state.dateOfBirth}
                                             onDateChange={(date) => {this.setState({ dateOfBirth: date })}}
-                                            onModalChange={this.handleModalChange}
                                         />
                                     </View>
                                 </Item>
@@ -229,7 +227,6 @@ class Step2 extends Component {
                                             options={this.getHeightOptions()}
                                             selectedValue={this.state.height}
                                             onValueChange={(itemValue) => {this.setState({ height: itemValue })}}
-                                            onModalChange={this.handleModalChange}
                                         />
                                 </Item>
                             </View>
@@ -250,7 +247,7 @@ class Step2 extends Component {
                             </View>
                         </Form>
                     </Content>
-                    <View style={{ display: this.state.modalVisible === true ? 'none' : 'flex', flexDirection: 'row', justifyContent: 'center', position: 'relative', marginTop: 10, bottom: 0, marginBottom: 30 }}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center', position: 'relative', marginTop: 10, bottom: 0, marginBottom: 30 }}>
                         <ReactNativeButton style={{ backgroundColor: 'purple' }} rounded><Text>Back</Text></ReactNativeButton>
                         <ReactNativeButton style={{ backgroundColor: 'purple', marginStart: 10 }} rounded><Text>Next</Text></ReactNativeButton>
                     </View>
