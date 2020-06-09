@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Picker, Dimensions, Button, TouchableOpacity, Keyboard } from 'react-native';
+import { Dimensions, Button, TouchableOpacity, Keyboard } from 'react-native';
 import { Container, Content, Text, View, Input, Item, Label, Form, Badge, Button as ReactNativeButton } from 'native-base';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import Picker from '../../components/miscellaneous/Picker';
 import * as Progress from 'react-native-progress';
 import { connect } from 'react-redux';
 
@@ -28,129 +29,52 @@ class Step1 extends Component {
         sexualOrientations: [
             {sexualOrientationID: 1, label: 'Straight'},
             {sexualOrientationID: 2, label: 'Bisexual'},
-        ],
-        showGenderPicker: false,
-        showEthnicityPicker: false,
-        showSexualOrientationPicker: false
+        ]
     }
 
-    renderGenderPicker = () => {
-        if (this.state.showGenderPicker === true) {
-            const { genders } = this.state;
-            let pickerItems;
-            if (genders.length > 0) {
-                pickerItems = genders.map(gender => <Picker.Item key={`gender-picker-item-${gender.genderID}`} label={`${gender.label}`} value={gender.genderID} />);
-            } else {
-                pickerItems = null;
-            }
-            return (
-                <View style={{ backgroundColor: 'white', position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                    <View style={{ borderTopWidth: 0.5, borderBottomWidth: 0.5, borderBottomColor: '#D3D3D3', borderTopColor: '#D3D3D3', flexDirection: 'row' }}>
-                        <View style={{  flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <Button title="Done" onPress={this.handleShowGenderPickerBtnPressed} />
-                        </View>
-                    </View>
-                    <Picker 
-                        selectedValue={this.state.selectedGenderID}
-                        onValueChange={(itemValue) => this.setState({ selectedGenderID: itemValue })}
-                    >
-                        {pickerItems}
-                    </Picker>
-                </View>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    renderSexualOrientationPicker = () => {
-        if (this.state.showSexualOrientationPicker === true) {
-            const { sexualOrientations } = this.state;
-            let pickerItems;
-            if (sexualOrientations.length > 0) {
-                pickerItems = sexualOrientations.map(sexualOrientation => <Picker.Item key={`sexual-orientation-item-${sexualOrientation.sexualOrientationID}`} label={sexualOrientation.label} value={sexualOrientation.sexualOrientationID} />);
-            }
-            return (
-                <View style={{ backgroundColor: 'white', position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                    <View style={{ borderTopWidth: 0.5, borderBottomWidth: 0.5, borderBottomColor: '#D3D3D3', borderTopColor: '#D3D3D3', flexDirection: 'row' }}>
-                        <View style={{  flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <Button title="Done" onPress={this.handleShowSexualOrientationPickerBtnPress} />
-                        </View>
-                    </View>
-                    <Picker
-                        selectedValue={this.state.selectedSexualOrientationID}
-                        onValueChange={(itemValue) => this.setState({ selectedSexualOrientationID: itemValue })}
-                    >
-                        {pickerItems}
-                    </Picker>
-                </View>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    renderEthnicityPicker = () => {
-        const { showEthnicityPicker, selectedEthnicityID } = this.state;
-        if (showEthnicityPicker === true) {
-            const { ethnicities } = this.state;
-            let pickerItems;
-            if (ethnicities.length > 0) {
-                pickerItems = ethnicities.map(ethnicity => <Picker.Item key={`picker-item-ethnicity: ${ethnicity.ethnicityID}`} label={ethnicity.label} value={ethnicity.ethnicityID} />);
-            }
-            return (
-                <View style={{ backgroundColor: 'white', position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-                    <View style={{ borderTopWidth: 0.5, borderBottomWidth: 0.5, borderBottomColor: '#D3D3D3', borderTopColor: '#D3D3D3', flexDirection: 'row' }}>
-                        <View style={{  flex: 1, flexDirection: 'row', justifyContent: 'flex-end' }}>
-                            <Button title="Done" onPress={this.handleShowEthnicityPickerBtnPress} />
-                        </View>
-                    </View>
-                    <Picker
-                        selectedValue={selectedEthnicityID}
-                        onValueChange={(itemValue) => this.setState({ selectedEthnicityID: itemValue })}>
-                            {pickerItems}
-                    </Picker>
-                </View>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    getGenderValue = () => {
-        const { selectedGenderID, genders } = this.state;
+    getgenders = () => {
+        const { genders } = this.state;
         if (genders.length > 0) {
-            for (const gender of genders) {
-                if (gender.genderID === selectedGenderID) {
-                    return gender.label;
-                }
-            }
+            return genders.map(genderOption => {
+                return {
+                    key: genderOption.genderID,
+                    value: genderOption.genderID,
+                    label: genderOption.label
+                };
+            });
+        } else {
+            return null;
         }
-        return '';
     }
 
-    getEthnicityValue = () => {
-        const { selectedEthnicityID, ethnicities } = this.state;
-        if (ethnicities.length > 0) {
-            for (const ethnicity of ethnicities) {
-                if (ethnicity.ethnicityID === selectedEthnicityID) {
-                    return ethnicity.label;
-                }
-            }
-        }
-        return '';
-    }
-
-    getSexualOrientationValue = () => {
-        const { selectedSexualOrientationID, sexualOrientations } = this.state;
+    getSexualOrientationOptions = () => {
+        const { sexualOrientations } = this.state;
         if (sexualOrientations.length > 0) {
-            for (const sexualOrientation of sexualOrientations) {
-                if (sexualOrientation.sexualOrientationID === selectedSexualOrientationID) {
-                    return sexualOrientation.label;
-                }
-            }
+            return sexualOrientations.map(sexualOrientation => {
+                return {
+                    key: sexualOrientation.sexualOrientationID,
+                    value: sexualOrientation.sexualOrientationID,
+                    label: sexualOrientation.label
+                };
+            });
+        } else {
+            return null;
         }
-        return '';
+    }
+
+    getEthnicityOptions = () => {
+        const { ethnicities } = this.state;
+        if (ethnicities.length > 0) {
+            return ethnicities.map(ethnicitiesOption => {
+                return {
+                    key: ethnicitiesOption.ethnicityID,
+                    value: ethnicitiesOption.ethnicityID,
+                    label: ethnicitiesOption.label
+                };
+            });
+        } else {
+            return null;
+        }
     }
 
     getEthnicityPrefsLabel = () => {
@@ -269,7 +193,7 @@ class Step1 extends Component {
         const style = {
             position: 'absolute', 
             alignSelf: 'center', 
-            bottom: 20, 
+            bottom: 30, 
             width: 200,
             backgroundColor: isValid === true ? 'purple' : 'lightgray'
         };
@@ -290,35 +214,43 @@ class Step1 extends Component {
                             <View style={{ marginTop: 10}}>
                                 <Text style={{ paddingStart: 8, fontSize: 10}}>Gender</Text>
                                 <Item rounded style={{ marginTop: 5, height: 35 }} onPress={this.handleShowGenderPickerBtnPressed}>
-                                    {this.state.selectedGenderID !== 0 && (
-                                        <Text style={{ color: 'purple', paddingStart: 10 }}>{this.getGenderValue()}</Text>
-                                    )}
-                                    {this.state.selectedGenderID === 0 && (
-                                        <Text style={{ color: 'grey', paddingStart: 10 }}>I identify as</Text>
-                                    )}
+                                    <Picker
+                                        animationType={'slide'}
+                                        modalTransparent={true}
+                                        placeHolderText="I identify as"
+                                        placeHolderTextStyle={{ color: 'gray' }}
+                                        options={this.getgenders()}
+                                        selectedValue={this.state.selectedGenderID}
+                                        onValueChange={(itemValue) => this.setState({ selectedGenderID: itemValue })}
+                                    />
                                 </Item>
                             </View>
                             <View style={{ marginTop: 10}}>
                                 <Text style={{ paddingStart: 8, fontSize: 10}}>Ethnicity</Text>
                                 <Item rounded style={{ marginTop: 5, height: 35 }} onPress={this.handleShowEthnicityPickerBtnPress}>
-                                    {this.state.selectedEthnicityID !== 0 && (
-                                        <Text style={{ color: 'purple', paddingStart: 10 }}>{this.getEthnicityValue()}</Text>
-                                    )}
-                                    {this.state.selectedEthnicityID === 0 && (
-                                        <Text style={{ color: 'grey', paddingStart: 10 }}>My ethnicity is</Text>
-                                    )}
+                                    <Picker
+                                            animationType={'slide'}
+                                            modalTransparent={true}
+                                            placeHolderText="My ethnicity is"
+                                            placeHolderTextStyle={{ color: 'gray' }}
+                                            options={this.getEthnicityOptions()}
+                                            selectedValue={this.state.selectedEthnicityID}
+                                            onValueChange={(itemValue) => this.setState({ selectedEthnicityID: itemValue })}
+                                        />
                                 </Item>
                             </View>
                             <View style={{ marginTop: 10 }}>
                                 <Text style={{ paddingStart: 8, fontSize: 10}}>Sexual orientation</Text>
                                 <Item rounded style={{ marginTop: 5, height: 35}} onPress={this.handleShowSexualOrientationPickerBtnPress}>
-                                    {this.state.selectedSexualOrientationID !== 0 && (
-                                        <Text style={{ color: 'purple', paddingStart: 10}}>{this.getSexualOrientationValue()}</Text>
-                                    )}
-                                    {this.state.selectedSexualOrientationID === 0 && (
-                                        <Text style={{ color: 'grey', paddingStart: 10}}>I am looking for</Text>
-                                    )}
-
+                                    <Picker
+                                            animationType={'slide'}
+                                            modalTransparent={true}
+                                            placeHolderText="I identify as"
+                                            placeHolderTextStyle={{ color: 'gray' }}
+                                            options={this.getSexualOrientationOptions()}
+                                            selectedValue={this.state.selectedSexualOrientationID}
+                                            onValueChange={(itemValue) => this.setState({ selectedSexualOrientationID: itemValue })}
+                                        />
                                 </Item>
                             </View>
                             <View style={{ marginTop: 10 }}>
@@ -345,9 +277,6 @@ class Step1 extends Component {
                 <ReactNativeButton rounded block style={this.getNextBtnStyle()} disabled={!this.getButtonDisabledValue()}>
                     <Text>Next</Text>
                 </ReactNativeButton>
-                {this.renderGenderPicker()}
-                {this.renderSexualOrientationPicker()}
-                {this.renderEthnicityPicker()}
             </TouchableOpacity>
         );
     }

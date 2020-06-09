@@ -33,7 +33,6 @@ class EthnicityPreferencesCheckBoxes extends Component {
             if (ethnicity.checked === true)
                 ethnicityPrefIDs.push(ethnicity.ethnicityID);
         });
-        console.log(ethnicityPrefIDs);
         this.props.dispatch(setEthnicityPrefIDs(ethnicityPrefIDs));
         this.props.navigation.goBack();
     }

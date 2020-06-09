@@ -34,6 +34,9 @@ export default class Picker extends Component {
 
     showPicker = () => {
         let modalVisible = true;
+        if (this.state.selectedValue === undefined && this.props.options !== undefined && this.props.options.length > 0) {
+            this.setState({ selectedValue: this.props.options[0].value });
+        }
         if (this.props.onModalChange) {
             this.props.onModalChange(modalVisible);
         }

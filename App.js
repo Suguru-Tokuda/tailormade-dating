@@ -47,8 +47,8 @@ const Home = () => {
 const UserRegistration = () => {
   return (
     <UserRegistrationStack.Navigator mode="card" screenOptions={{ headerShown: false, gestureEnabled: false }}>
-      <UserRegistrationStack.Screen name="Step2" component={Step2} />
       <UserRegistrationStack.Screen name="Step1" component={Step1} />
+      <UserRegistrationStack.Screen name="Step2" component={Step2} />
       <UserRegistrationStack.Screen name="EthnicityPreferenceCheckBoxes" component={EthnicityPreferenceCheckBoxes} />
     </UserRegistrationStack.Navigator>
   );
